@@ -53,7 +53,7 @@ namespace project_manage_system_backend.Services
 
         public bool IsUserInProject(User user, Project project)
         {
-            var projectList = user.Projects.Where(p => p.ProjectId == project.ID).ToList();
+            var projectList = user.Projects.Where(p => p.ProjectId == project.Id).ToList();
             return projectList.Any();
         }
 
@@ -67,7 +67,7 @@ namespace project_manage_system_backend.Services
 
         public Invitation GetInvitation(int id)
         {
-            var invitation = _dbContext.Invitations.Include(u => u.InvitedProject).Include(u => u.Inviter).Include(u => u.Applicant).Where(i => i.ID.Equals(id)).First();
+            var invitation = _dbContext.Invitations.Include(u => u.InvitedProject).Include(u => u.Inviter).Include(u => u.Applicant).Where(i => i.Id.Equals(id)).First();
             return invitation;
         }
     }

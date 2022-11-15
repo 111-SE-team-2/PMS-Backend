@@ -53,7 +53,7 @@ namespace PMS_test.ControllersTest
         {
             _project1 = new Project
             {
-                ID = 1,
+                Id = 1,
                 Name = "Test",
                 Owner = null,
                 Users = null

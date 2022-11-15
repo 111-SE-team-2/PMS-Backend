@@ -84,7 +84,7 @@ namespace project_manage_system_backend.Services
         {
             var user = _dbContext.Users.Include(u => u.Projects).ThenInclude(p => p.Project).ThenInclude(p => p.Owner).FirstOrDefault(u => u.Account.Equals(account));
             var query = (from up in user.Projects
-                         select new ProjectResultDto { Id = up.Project.ID, Name = up.Project.Name, OwnerId = up.Project.Owner.Account, OwnerName = up.Project.Owner.Name }).ToList();
+                         select new ProjectResultDto { Id = up.Project.Id, Name = up.Project.Name, OwnerId = up.Project.Owner.Account, OwnerName = up.Project.Owner.Name }).ToList();
             return query;
         }
 
@@ -104,7 +104,7 @@ namespace project_manage_system_backend.Services
 
         public List<UserInfoDto> GetProjectMember(int projectId)
         {
-            var projectById = _dbContext.Projects.Include(p => p.Users).ThenInclude(u => u.User).FirstOrDefault(p => p.ID == projectId);
+            var projectById = _dbContext.Projects.Include(p => p.Users).ThenInclude(u => u.User).FirstOrDefault(p => p.Id == projectId);
 
             if (projectById != null)
             {
@@ -128,14 +128,14 @@ namespace project_manage_system_backend.Services
 
         public List<ProjectResultDto> GetAllProject()
         {
-            return _dbContext.Projects.Select(p => new ProjectResultDto { Id = p.ID, Name = p.Name, OwnerId = p.Owner.Account, OwnerName = p.Owner.Name, Members = p.Users.Count }).ToList();
+            return _dbContext.Projects.Select(p => new ProjectResultDto { Id = p.Id, Name = p.Name, OwnerId = p.Owner.Account, OwnerName = p.Owner.Name, Members = p.Users.Count }).ToList();
         }
 
         public void DeleteProject(int projectId)
         {
-            var invitations = _dbContext.Invitations.Where(i => i.InvitedProject.ID.Equals(projectId));
+            var invitations = _dbContext.Invitations.Where(i => i.InvitedProject.Id.Equals(projectId));
             _dbContext.Invitations.RemoveRange(invitations);
-            var repos = _dbContext.Repositories.Where(r => r.Project.ID.Equals(projectId));
+            var repos = _dbContext.Repositories.Where(r => r.Project.Id.Equals(projectId));
             _dbContext.Repositories.RemoveRange(repos);
             var project = _dbContext.Projects.Find(projectId);
             _dbContext.Projects.Remove(project);

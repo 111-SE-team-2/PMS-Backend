@@ -117,13 +117,13 @@ namespace project_manage_system_backend.Services
 
         public List<Repo> GetRepositoryByProjectId(int id)
         {
-            var project = _dbContext.Projects.Where(p => p.ID.Equals(id)).Include(p => p.Repositories).First();
+            var project = _dbContext.Projects.Where(p => p.Id.Equals(id)).Include(p => p.Repositories).First();
             return project.Repositories;
         }
 
         public Project GetProjectByProjectId(int id)
         {
-            var project = _dbContext.Projects.Include(r => r.Repositories).Where(p => p.ID == id).First();
+            var project = _dbContext.Projects.Include(r => r.Repositories).Where(p => p.Id == id).First();
             return project;
         }
 
@@ -131,7 +131,7 @@ namespace project_manage_system_backend.Services
         {
             try
             {
-                var repo = _dbContext.Repositories.Include(p => p.Project).First(r => r.ID == repoId && r.Project.ID == projectId);
+                var repo = _dbContext.Repositories.Include(p => p.Project).First(r => r.Id == repoId && r.Project.Id == projectId);
                 _dbContext.Repositories.Remove(repo);
                 return !(_dbContext.SaveChanges() == 0);
             }

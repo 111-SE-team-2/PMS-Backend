@@ -17,7 +17,7 @@ using Xunit;
 namespace PMS_test.ServicesTest
 {
     [TestCaseOrderer("XUnit.Project.Orderers.AlphabeticalOrderer", "XUnit.Project")]
-    public class JiraServiceTest
+    public class JiraServiceTests
     {
         private readonly PMSContext _dbContext;
         private readonly HttpClient _client;
@@ -51,7 +51,7 @@ namespace PMS_test.ServicesTest
         List<BoardDetailDto> boardDetailDtos = new List<BoardDetailDto>();      
         private Project _project1;  
 
-        public JiraServiceTest()
+        public JiraServiceTests()
         {
             _dbContext = new PMSContext(new DbContextOptionsBuilder<PMSContext>()
                .UseSqlite(CreateInMemoryDatabase()).Options);
@@ -73,7 +73,7 @@ namespace PMS_test.ServicesTest
         {
             _project1 = new Project
             {
-                ID = 1,
+                Id = 1,
                 Name = "Test",
                 Owner = null,
                 Users = null

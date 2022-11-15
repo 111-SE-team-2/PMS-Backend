@@ -15,7 +15,7 @@ namespace PMS_test.ServicesTest
 {
 
     [TestCaseOrderer("XUnit.Project.Orderers.AlphabeticalOrderer", "XUnit.Project")]
-    public class SonarqubeServierTest
+    public class SonarqubeServiceTests
     {
 
         private const string _owner = "WeedChen";
@@ -28,7 +28,7 @@ namespace PMS_test.ServicesTest
         private Repo _repo1;
         private Repo _repo2;
 
-        public SonarqubeServierTest()
+        public SonarqubeServiceTests()
         {
             _dbContext = new PMSContext(new DbContextOptionsBuilder<PMSContext>()
                .UseSqlite(CreateInMemoryDatabase()).Options);
@@ -181,7 +181,7 @@ namespace PMS_test.ServicesTest
         [Fact]
         public async void TestGetSonarqubeInfoAsync()
         {
-            var response = await _sonarqubeService.GetSonarqubeInfoAsync(_repo1.ID);
+            var response = await _sonarqubeService.GetSonarqubeInfoAsync(_repo1.Id);
             Assert.Equal("PMS_109", response.projectName);
             Assert.Equal(5, response.measures.Count);
 
@@ -214,19 +214,19 @@ namespace PMS_test.ServicesTest
         [Fact]
         public async void TestIsHaveSonarqubeShouldReturnTrue()
         {
-            Assert.True(await _sonarqubeService.IsHaveSonarqube(_repo1.ID));
+            Assert.True(await _sonarqubeService.IsHaveSonarqube(_repo1.Id));
         }
 
         [Fact]
         public async void TestIsHaveSonarqubeShouldReturnFalse()
         {
-            Assert.False(await _sonarqubeService.IsHaveSonarqube(_repo2.ID));
+            Assert.False(await _sonarqubeService.IsHaveSonarqube(_repo2.Id));
         }
 
         [Fact]
         public async void TestGetSonarqubeCodeSmellAsync()
         {
-            var response = await _sonarqubeService.GetSonarqubeCodeSmellAsync(_repo1.ID);
+            var response = await _sonarqubeService.GetSonarqubeCodeSmellAsync(_repo1.Id);
             var issues = response[COMPONENT_NAME];
 
             Assert.Equal("01fc972e-2a3c-433e-bcae-0bd7f88f5123", issues[0].key);

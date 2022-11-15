@@ -12,12 +12,12 @@ using Xunit;
 namespace PMS_test.ServicesTest
 {
     [TestCaseOrderer("XUnit.Project.Orderers.AlphabeticalOrderer", "XUnit.Project")]
-    public class ProjectServiceTest
+    public class ProjectServiceTests
     {
         private readonly PMSContext _dbContext;
         private readonly ProjectService _projectService;
 
-        public ProjectServiceTest()
+        public ProjectServiceTests()
         {
             _dbContext = new PMSContext(new DbContextOptionsBuilder<PMSContext>()
                                             .UseSqlite(CreateInMemoryDatabase())
