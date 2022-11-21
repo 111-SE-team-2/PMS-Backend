@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using project_manage_system_backend.Dtos;
 using project_manage_system_backend.Dtos.Schedule;
+using project_manage_system_backend.Models;
 using project_manage_system_backend.Shares;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -90,6 +92,12 @@ namespace project_manage_system_backend.Services
             {
                 return false;
             }
+        }
+
+        public List<Schedule> GetScheduleByProjectId(int projectId)
+        {
+            var project = _dbContext.Projects.Where(project => project.Id.Equals(projectId)).Include(project => project.Schedules).First();
+            return project.Schedules;
         }
     }
 }

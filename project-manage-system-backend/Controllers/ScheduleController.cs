@@ -86,5 +86,13 @@ namespace project_manage_system_backend.Controllers
                 });
             }
         }
+
+        [Authorize]
+        [HttpGet("{projectId}")]
+        public IActionResult GetScheduleByProjectId(int projectId)
+        {
+            var result = _scheduleService.GetScheduleByProjectId(projectId);
+            return Ok(result);
+        }
     }
 }
