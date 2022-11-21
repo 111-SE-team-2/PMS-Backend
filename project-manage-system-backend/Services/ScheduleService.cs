@@ -77,5 +77,19 @@ namespace project_manage_system_backend.Services
                 throw new Exception("edit schedule information fail");
             }
         }
+
+        public bool DeleteSchedule(int projectId, int scheduleId)
+        {
+            try
+            {
+                var schedule = _dbContext.Schedules.Include(schedule => schedule.Project).First(schedule => schedule.Id == scheduleId && schedule.Project.Id == projectId);
+                _dbContext.Schedules.Remove(schedule);
+                return !(_dbContext.SaveChanges() == 0);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
     }
 }
