@@ -137,6 +137,8 @@ namespace project_manage_system_backend.Services
             _dbContext.Invitations.RemoveRange(invitations);
             var repos = _dbContext.Repositories.Where(r => r.Project.Id.Equals(projectId));
             _dbContext.Repositories.RemoveRange(repos);
+            var schedules = _dbContext.Schedules.Where(s => s.Project.Id.Equals(projectId));
+            _dbContext.Schedules.RemoveRange(schedules);
             var project = _dbContext.Projects.Find(projectId);
             _dbContext.Projects.Remove(project);
 

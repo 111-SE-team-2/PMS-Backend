@@ -2,6 +2,7 @@
 {
     public class ScheduleDto
     {
+        public int scheduleId { set; get; }
         public int projectId { set; get; }
         public string title { set; get; }
         public string location { set; get; }

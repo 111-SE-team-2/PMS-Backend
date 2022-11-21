@@ -41,5 +41,29 @@ namespace project_manage_system_backend.Controllers
                 });
             }
         }
+
+        [Authorize]
+        [HttpPost("edit")]
+        public IActionResult EditScheduleInformation(ScheduleDto scheduleDto)
+        {
+            try
+            {
+                _scheduleService.EditScheduleInformation(scheduleDto);
+                return Ok(new ResponseDto
+                {
+                    success = true,
+                    message = "Edited Success",
+                });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new ResponseDto
+                {
+                    success = false,
+                    message = ex.Message,
+                });
+            }
+
+        }
     }
 }

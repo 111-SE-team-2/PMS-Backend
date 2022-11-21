@@ -26,6 +26,11 @@ namespace project_manage_system_backend.Services
             }
 
             var project = _dbContext.Projects.Include(project => project.Repositories).Where(project => project.Id == scheduleDto.projectId).First();
+            if (project.Schedules.Where(schedule => schedule.Title == scheduleDto.title).ToList().Count != 0)
+            {
+                throw new Exception("duplicate schedule title");
+            }
+
             var schedule = new Models.Schedule
             {
                 Project = project,
@@ -38,6 +43,39 @@ namespace project_manage_system_backend.Services
             _dbContext.Add(schedule);
             if (_dbContext.SaveChanges() == 0)
                 throw new Exception("create schedule fail, DB can't save!");
+        }
+
+        public void EditScheduleInformation(ScheduleDto scheduleDto)
+        {
+            string regexPattern = "^[A-Za-z0-9]+";
+            Regex regex = new Regex(regexPattern);
+            if (scheduleDto.title == "" || !regex.IsMatch(scheduleDto.title))
+            {
+                throw new Exception("please enter schedule title");
+            }
+            if (scheduleDto.location == "" || !regex.IsMatch(scheduleDto.location))
+            {
+                throw new Exception("please enter schedule location");
+            }
+
+            var project = _dbContext.Projects.Include(project => project.Repositories).Where(project => project.Id == scheduleDto.projectId).First();
+            var schedulesInProjectWithSameTitle = project.Schedules.Where(schedule => schedule.Title == scheduleDto.title).ToList();
+            var schedule = _dbContext.Schedules.Find(scheduleDto.scheduleId);
+            if (schedulesInProjectWithSameTitle.Count != 0 && schedule.Title != scheduleDto.title)
+            {
+                throw new Exception("duplicate schedule title");
+            }
+
+            schedule.Title = scheduleDto.title;
+            schedule.Location = scheduleDto.location;
+            schedule.Description = scheduleDto.description;
+            schedule.IsVideoConferencing = scheduleDto.isVideoConferencing;
+
+            _dbContext.Update(schedule);
+            if (_dbContext.SaveChanges() == 0)
+            {
+                throw new Exception("edit schedule information fail");
+            }
         }
     }
 }
