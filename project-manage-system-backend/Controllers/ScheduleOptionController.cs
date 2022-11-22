@@ -64,5 +64,13 @@ namespace project_manage_system_backend.Controllers
                 });
             }
         }
+
+        [Authorize]
+        [HttpGet("{scheduleId}")]
+        public IActionResult GetScheduleOptionByScheduleId(int scheduleId)
+        {
+            var result = _scheduleOptionService.GetScheduleOptionByScheduleId(scheduleId);
+            return Ok(result);
+        }
     }
-}
+

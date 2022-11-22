@@ -55,5 +55,11 @@ namespace project_manage_system_backend.Services
                 return false;
             }
         }
+
+        public List<ScheduleOption> GetScheduleOptionByScheduleId(int scheduleId)
+        {
+            var schedule = _dbContext.Schedules.Find(scheduleId);
+            return schedule.ScheduleOptions;
+        }
     }
 }
