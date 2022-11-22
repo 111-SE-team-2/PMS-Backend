@@ -65,12 +65,12 @@ namespace project_manage_system_backend.Controllers
         }
 
         [Authorize]
-        [HttpDelete("{projectId}/{scheduleId}")]
-        public IActionResult DeleteRepo(int projectId, int scheduleId)
+        [HttpDelete("{scheduleId}")]
+        public IActionResult DeleteSchedule(int scheduleId)
         {
             try
             {
-                bool isSuccess = _scheduleService.DeleteSchedule(projectId, scheduleId);
+                bool isSuccess = _scheduleService.DeleteSchedule(scheduleId);
                 return Ok(new ResponseDto()
                 {
                     success = isSuccess,

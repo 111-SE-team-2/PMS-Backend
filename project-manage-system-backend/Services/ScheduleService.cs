@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Build.Evaluation;
+using Microsoft.CodeAnalysis;
+using Microsoft.EntityFrameworkCore;
 using project_manage_system_backend.Dtos.Schedule;
 using project_manage_system_backend.Models;
 using project_manage_system_backend.Shares;
@@ -23,7 +25,7 @@ namespace project_manage_system_backend.Services
                 throw new Exception("please enter schedule location");
             }
 
-            var project = _dbContext.Projects.Where(project => project.Id == scheduleDto.projectId).First();
+            var project = _dbContext.Projects.Find(scheduleDto.projectId);
             if (project.Schedules.Where(schedule => schedule.Title == scheduleDto.title).ToList().Count != 0)
             {
                 throw new Exception("duplicate schedule title");
@@ -54,7 +56,7 @@ namespace project_manage_system_backend.Services
                 throw new Exception("please enter schedule location");
             }
 
-            var project = _dbContext.Projects.Include(project => project.Repositories).Where(project => project.Id == scheduleDto.projectId).First();
+            var project = _dbContext.Projects.Find(scheduleDto.projectId);
             var schedulesInProjectWithSameTitle = project.Schedules.Where(schedule => schedule.Title == scheduleDto.title).ToList();
             var schedule = _dbContext.Schedules.Find(scheduleDto.scheduleId);
             if (schedulesInProjectWithSameTitle.Count != 0 && schedule.Title != scheduleDto.title)
@@ -74,11 +76,13 @@ namespace project_manage_system_backend.Services
             }
         }
 
-        public bool DeleteSchedule(int projectId, int scheduleId)
+        public bool DeleteSchedule(int scheduleId)
         {
             try
             {
-                var schedule = _dbContext.Schedules.Include(schedule => schedule.Project).First(schedule => schedule.Id == scheduleId && schedule.Project.Id == projectId);
+                var scheduleOptions = _dbContext.ScheduleOptions.Where(scheduleOption => scheduleOption.Schedule.Id.Equals(scheduleId));
+                _dbContext.ScheduleOptions.RemoveRange(scheduleOptions);
+                var schedule = _dbContext.Schedules.Find(scheduleId);
                 _dbContext.Schedules.Remove(schedule);
                 return !(_dbContext.SaveChanges() == 0);
             }
@@ -90,7 +94,7 @@ namespace project_manage_system_backend.Services
 
         public List<Schedule> GetScheduleByProjectId(int projectId)
         {
-            var project = _dbContext.Projects.Where(project => project.Id.Equals(projectId)).Include(project => project.Schedules).First();
+            var project = _dbContext.Projects.Find(projectId);
             return project.Schedules;
         }
     }
