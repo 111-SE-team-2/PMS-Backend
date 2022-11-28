@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using project_manage_system_backend.Dtos.Schedule;
+﻿using project_manage_system_backend.Dtos.Schedule;
 using project_manage_system_backend.Models;
 using project_manage_system_backend.Shares;
 using System;
@@ -34,7 +33,7 @@ namespace project_manage_system_backend.Services
             {
                 Schedule = schedule,
                 Duration = scheduleOptionDto.duration,
-                StartTime = scheduleOptionDto.startTime,
+                StartTime = scheduleOptionDto.startTime
             };
 
             _dbContext.Add(scheduleOption);

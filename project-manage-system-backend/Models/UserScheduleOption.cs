@@ -1,6 +1,4 @@
-﻿using project_manage_system_backend.Enum;
-
-namespace project_manage_system_backend.Models
+﻿namespace project_manage_system_backend.Models
 {
     public class UserScheduleOption
     {
@@ -8,6 +6,11 @@ namespace project_manage_system_backend.Models
         public User User { get; set; }
         public int ScheduleOptionId { get; set; }
         public ScheduleOption ScheduleOption { get; set; }
-        public ScheduleOptionAvailability Availability { get; set; }
+        /// value：
+        ///     Yes
+        ///     IfNeedBe
+        ///     CannotAttend
+        ///     Pending
+        public string Availability { get; set; }
     }
 }
