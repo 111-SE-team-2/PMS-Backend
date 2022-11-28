@@ -23,21 +23,30 @@ namespace project_manage_system_backend.Services
             var user = _dbContext.Users.Find(userId);
             if (user != null)
             {
-                var scheduleOption = _dbContext.ScheduleOptions.Find(userScheduleOptionDto.ScheduleOptionId);
-                if (scheduleOption != null)
+                var userScheduleOptions = user.ScheduleOptions.Where(userScheduleOption => userScheduleOption.ScheduleOptionId == userScheduleOptionDto.ScheduleOptionId).ToList();
+                if (userScheduleOptions.Count == 0)
                 {
-                    var userScheduleOption = new Models.UserScheduleOption
+                    var scheduleOption = _dbContext.ScheduleOptions.Find(userScheduleOptionDto.ScheduleOptionId);
+                    if (scheduleOption != null)
                     {
-                        User = user,
-                        ScheduleOption = scheduleOption,
-                        Availability = userScheduleOptionDto.Availability
-                    };
-
-                    _dbContext.Add(userScheduleOption);
+                        var userScheduleOption = new Models.UserScheduleOption
+                        {
+                            User = user,
+                            ScheduleOption = scheduleOption,
+                            Availability = userScheduleOptionDto.Availability
+                        };
+                        _dbContext.Add(userScheduleOption);
+                    }
+                    else
+                    {
+                        throw new Exception("schedule option fail, can not find this schedule option");
+                    }
                 }
                 else
                 {
-                    throw new Exception("schedule option fail, can not find this schedule option");
+                    var userScheduleOption = userScheduleOptions.First();
+                    userScheduleOption.Availability = userScheduleOptionDto.Availability;
+                    _dbContext.Update(userScheduleOption);
                 }
             }
             else
