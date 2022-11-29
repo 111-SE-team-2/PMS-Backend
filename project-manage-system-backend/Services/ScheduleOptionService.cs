@@ -1,4 +1,5 @@
-﻿using project_manage_system_backend.Dtos.Schedule;
+﻿using Microsoft.EntityFrameworkCore;
+using project_manage_system_backend.Dtos.Schedule;
 using project_manage_system_backend.Models;
 using project_manage_system_backend.Shares;
 using System;
@@ -13,6 +14,10 @@ namespace project_manage_system_backend.Services
 
         public void AddScheduleOption(ScheduleOptionDto scheduleOptionDto)
         {
+            if (!(scheduleOptionDto.scheduleId > 0))
+            {
+                throw new Exception("please enter schedule Id");
+            }
             if (scheduleOptionDto.duration == "")
             {
                 throw new Exception("please enter schedule option duration");
@@ -22,7 +27,7 @@ namespace project_manage_system_backend.Services
                 throw new Exception("please enter schedule option startTime");
             }
 
-            var schedule = _dbContext.Schedules.Find(scheduleOptionDto.scheduleId);
+            var schedule = _dbContext.Schedules.Where(schedule => schedule.Id.Equals(scheduleOptionDto.scheduleId)).Include(schedule => schedule.ScheduleOptions).First();
             var scheduleOptionsInSchedule = schedule.ScheduleOptions.Where(scheduleOption => scheduleOption.Duration == scheduleOptionDto.duration && scheduleOption.StartTime == scheduleOptionDto.startTime).ToList();
             if (scheduleOptionsInSchedule.Count != 0)
             {
@@ -45,7 +50,7 @@ namespace project_manage_system_backend.Services
         {
             try
             {
-                var scheduleOption = _dbContext.ScheduleOptions.Find(scheduleOptionId);
+                var scheduleOption = _dbContext.ScheduleOptions.Where(scheduleOption => scheduleOption.Id.Equals(scheduleOptionId)).First(); ;
                 _dbContext.ScheduleOptions.Remove(scheduleOption);
                 return !(_dbContext.SaveChanges() == 0);
             }
@@ -57,7 +62,7 @@ namespace project_manage_system_backend.Services
 
         public List<ScheduleOption> GetScheduleOptionByScheduleId(int scheduleId)
         {
-            var schedule = _dbContext.Schedules.Find(scheduleId);
+            var schedule = _dbContext.Schedules.Where(schedule => schedule.Id.Equals(scheduleId)).Include(schedule => schedule.ScheduleOptions).First();
             return schedule.ScheduleOptions;
         }
     }

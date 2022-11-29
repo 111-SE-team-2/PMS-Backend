@@ -1,5 +1,4 @@
-﻿using Microsoft.Build.Evaluation;
-using Microsoft.CodeAnalysis;
+﻿using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using project_manage_system_backend.Dtos.Schedule;
 using project_manage_system_backend.Models;
@@ -16,6 +15,10 @@ namespace project_manage_system_backend.Services
 
         public void CreateSchedule(ScheduleDto scheduleDto)
         {
+            if (!(scheduleDto.projectId > 0))
+            {
+                throw new Exception("please enter project Id");
+            }
             if (scheduleDto.title == "")
             {
                 throw new Exception("please enter schedule title");
@@ -47,6 +50,10 @@ namespace project_manage_system_backend.Services
 
         public void EditScheduleInformation(ScheduleDto scheduleDto)
         {
+            if (!(scheduleDto.scheduleId > 0))
+            {
+                throw new Exception("please enter schedule Id");
+            }
             if (scheduleDto.title == "")
             {
                 throw new Exception("please enter schedule title");
@@ -56,7 +63,7 @@ namespace project_manage_system_backend.Services
                 throw new Exception("please enter schedule location");
             }
 
-            var schedule = _dbContext.Schedules.Find(scheduleDto.scheduleId);
+            var schedule = _dbContext.Schedules.Where(schedule => schedule.Id.Equals(scheduleDto.scheduleId)).First();
             var project = _dbContext.Projects.Where(project => project.Id.Equals(schedule.ProjectId)).Include(project => project.Schedules).First();
             var schedulesInProjectWithSameTitle = project.Schedules.Where(schedule => schedule.Title == scheduleDto.title).ToList();
             if (schedulesInProjectWithSameTitle.Count != 0 && schedule.Title != scheduleDto.title)
@@ -82,7 +89,7 @@ namespace project_manage_system_backend.Services
             {
                 var scheduleOptions = _dbContext.ScheduleOptions.Where(scheduleOption => scheduleOption.Schedule.Id.Equals(scheduleId));
                 _dbContext.ScheduleOptions.RemoveRange(scheduleOptions);
-                var schedule = _dbContext.Schedules.Find(scheduleId);
+                var schedule = _dbContext.Schedules.Where(schedule => schedule.Id.Equals(scheduleId)).First();
                 _dbContext.Schedules.Remove(schedule);
                 return !(_dbContext.SaveChanges() == 0);
             }

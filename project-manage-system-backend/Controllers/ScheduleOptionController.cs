@@ -36,7 +36,7 @@ namespace project_manage_system_backend.Controllers
                 return Ok(new ResponseDto
                 {
                     success = false,
-                    message = "Added Error" + ex.Message
+                    message = ex.Message
                 });
             }
         }
