@@ -18,7 +18,7 @@ namespace project_manage_system_backend.Controllers
             _scheduleService = new ScheduleService(dbContext);
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpPost("create")]
         public IActionResult CreateSchedule(ScheduleDto scheduleDto)
         {
@@ -36,12 +36,12 @@ namespace project_manage_system_backend.Controllers
                 return Ok(new ResponseDto
                 {
                     success = false,
-                    message = "Created Error" + ex.Message
+                    message = ex.Message
                 });
             }
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpPut("edit")]
         public IActionResult EditScheduleInformation(ScheduleDto scheduleDto)
         {
@@ -64,7 +64,7 @@ namespace project_manage_system_backend.Controllers
             }
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpDelete("{scheduleId}")]
         public IActionResult DeleteSchedule(int scheduleId)
         {
@@ -87,7 +87,7 @@ namespace project_manage_system_backend.Controllers
             }
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet("{projectId}")]
         public IActionResult GetScheduleByProjectId(int projectId)
         {
