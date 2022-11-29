@@ -43,5 +43,13 @@ namespace project_manage_system_backend.Controllers
                 });
             }
         }
+
+        [Authorize]
+        [HttpGet("{scheduleOptionId}")]
+        public IActionResult GetUserListInScheduleOption(int scheduleOptionId)
+        {
+            var result = _userScheduleOptionService.GetUserListInScheduleOption(scheduleOptionId);
+            return Ok(result);
+        }
     }
 }

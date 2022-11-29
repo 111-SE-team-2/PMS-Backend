@@ -59,5 +59,11 @@ namespace project_manage_system_backend.Services
                 throw new Exception("vote schedule option fail");
             }
         }
+
+        public List<UserScheduleOption> GetUserListInScheduleOption(int scheduleOptionId)
+        {
+            var scheduleOption = _dbContext.ScheduleOptions.Find(scheduleOptionId);
+            return scheduleOption.Users;
+        }
     }
 }
