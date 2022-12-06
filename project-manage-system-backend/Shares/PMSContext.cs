@@ -12,20 +12,30 @@ namespace project_manage_system_backend.Shares
         public DbSet<Project> Projects { get; set; }
         public DbSet<Repo> Repositories { get; set; }
         public DbSet<Invitation> Invitations { get; set; }
+        public DbSet<Schedule> Schedules { get; set; }
+        public DbSet<ScheduleOption> ScheduleOptions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<UserProject>().HasKey(p => new { p.ProjectId, p.Account });
+            modelBuilder.Entity<UserProject>().HasKey(userProject => new { userProject.ProjectId, userProject.Account });
             modelBuilder.Entity<UserProject>()
-                .HasOne(up => up.Project)
-                .WithMany(p => p.Users)
-                .HasForeignKey(ut => ut.ProjectId);
+                .HasOne(userProject => userProject.Project)
+                .WithMany(project => project.Users)
+                .HasForeignKey(userProject => userProject.ProjectId);
+            modelBuilder.Entity<UserProject>()
+                .HasOne(userProject => userProject.User)
+                .WithMany(user => user.Projects)
+                .HasForeignKey(userProject => userProject.Account);
 
-            modelBuilder.Entity<UserProject>()
-                .HasOne(pt => pt.User)
-                .WithMany(t => t.Projects)
-                .HasForeignKey(pt => pt.Account);
+            modelBuilder.Entity<UserScheduleOption>().HasKey(userScheduleOption => new { userScheduleOption.ScheduleOptionId, userScheduleOption.Account });
+            modelBuilder.Entity<UserScheduleOption>()
+                .HasOne(userScheduleOption => userScheduleOption.ScheduleOption)
+                .WithMany(scheduleOption => scheduleOption.Users)
+                .HasForeignKey(ut => ut.ScheduleOptionId);
+            modelBuilder.Entity<UserScheduleOption>()
+                .HasOne(userScheduleOption => userScheduleOption.User)
+                .WithMany(user => user.ScheduleOptions)
+                .HasForeignKey(userScheduleOption => userScheduleOption.Account);
         }
-
     }
 }

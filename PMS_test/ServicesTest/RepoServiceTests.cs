@@ -125,7 +125,7 @@ namespace PMS_test.ControllersTest
         {
             AddRepoDto noSonarqube = new AddRepoDto()
             {
-                projectId = (await _dbContext.Projects.ToListAsync())[0].ID,
+                projectId = (await _dbContext.Projects.ToListAsync())[0].Id,
                 url = ""
             };
 
@@ -139,7 +139,7 @@ namespace PMS_test.ControllersTest
         {
             AddRepoDto noSonarqube = new AddRepoDto()
             {
-                projectId = (await _dbContext.Projects.ToListAsync())[0].ID,
+                projectId = (await _dbContext.Projects.ToListAsync())[0].Id,
                 url = _successFakeRepository
             };
             var response = await _repoService.AddRepo(noSonarqube);
@@ -156,7 +156,7 @@ namespace PMS_test.ControllersTest
         {
             AddRepoDto sonarqube = new AddRepoDto()
             {
-                projectId = (await _dbContext.Projects.ToListAsync())[0].ID,
+                projectId = (await _dbContext.Projects.ToListAsync())[0].Id,
                 url = _successFakeRepository
             };
             var response = await _repoService.AddRepo(sonarqube);

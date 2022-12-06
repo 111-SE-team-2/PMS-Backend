@@ -27,7 +27,7 @@ namespace project_manage_system_backend.Services
                     boardName = boardDetailDto.name;
                 }
             }
-            var project = _dbContext.Projects.Where(p => p.ID == dto.ProjectId).First();
+            var project = _dbContext.Projects.Where(p => p.Id == dto.ProjectId).First();
             Repo repo = new Repo
             {
                 Name = boardName, // TODO: IsSonarqube要拿掉
@@ -40,7 +40,7 @@ namespace project_manage_system_backend.Services
             {
                 throw new Exception("create repository fail");
             }
-            repo = _dbContext.Repositories.Where(repo => repo.Name == boardName).OrderByDescending(repo => repo.ID).First();
+            repo = _dbContext.Repositories.Where(repo => repo.Name == boardName).OrderByDescending(repo => repo.Id).First();
 
             Jira jira = new Jira
             {
@@ -48,7 +48,7 @@ namespace project_manage_system_backend.Services
                 APIToken = dto.APIToken,
                 Account = dto.Account,
                 BoardId = dto.BoardId,
-                Id = repo.ID
+                Id = repo.Id
             };
             _dbContext.Jiras.Add(jira);
             if (_dbContext.SaveChanges() == 0)

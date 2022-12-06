@@ -2,7 +2,7 @@
 {
     public class Invitation
     {
-        public int ID { get; set; }
+        public int Id { get; set; }
         public User Inviter { get; set; }
         public User Applicant { get; set; }
         public Project InvitedProject { get; set; }

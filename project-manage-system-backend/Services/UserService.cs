@@ -49,7 +49,7 @@ namespace project_manage_system_backend.Services
 
         public bool IsProjectOwner(User owner, int projectId)
         {
-            var project = _dbContext.Projects.Include(p => p.Owner).Where(p => p.ID.Equals(projectId)).First();
+            var project = _dbContext.Projects.Include(p => p.Owner).Where(p => p.Id.Equals(projectId)).First();
             return project.Owner.Equals(owner);
         }
 
