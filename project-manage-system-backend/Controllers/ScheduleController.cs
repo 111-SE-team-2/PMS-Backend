@@ -88,10 +88,18 @@ namespace project_manage_system_backend.Controllers
         }
 
         [Authorize]
-        [HttpGet("{projectId}")]
+        [HttpGet("project/{projectId}")]
         public IActionResult GetScheduleByProjectId(int projectId)
         {
             var result = _scheduleService.GetScheduleByProjectId(projectId);
+            return Ok(result);
+        }
+
+        [Authorize]
+        [HttpGet("{scheduleId}")]
+        public IActionResult GetScheduleByScheduleId(int scheduleId)
+        {
+            var result = _scheduleService.GetScheduleByScheduleId(scheduleId);
             return Ok(result);
         }
     }

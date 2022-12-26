@@ -38,7 +38,11 @@ namespace project_manage_system_backend.Services
             {
                 Schedule = schedule,
                 Duration = scheduleOptionDto.duration,
-                StartTime = scheduleOptionDto.startTime
+                StartTime = scheduleOptionDto.startTime,
+                NumberOfYes = scheduleOptionDto.numberOfYes,
+                NumberOfIfNeedBe = scheduleOptionDto.numberOfIfNeedBe,
+                NumberOfCannotAttend = scheduleOptionDto.numberOfCannotAttend,
+                NumberOfPending = scheduleOptionDto.numberOfPending
             };
 
             _dbContext.Add(scheduleOption);
@@ -62,7 +66,7 @@ namespace project_manage_system_backend.Services
 
         public List<ScheduleOption> GetScheduleOptionByScheduleId(int scheduleId)
         {
-            var schedule = _dbContext.Schedules.Where(schedule => schedule.Id.Equals(scheduleId)).Include(schedule => schedule.ScheduleOptions).First();
+            var schedule = _dbContext.Schedules.Where(schedule => schedule.Id.Equals(scheduleId)).Include(schedule => schedule.ScheduleOptions).ThenInclude(scheduleOption => scheduleOption.Users).First();
             return schedule.ScheduleOptions;
         }
     }

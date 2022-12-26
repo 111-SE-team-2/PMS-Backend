@@ -104,5 +104,11 @@ namespace project_manage_system_backend.Services
             var project = _dbContext.Projects.Where(project => project.Id.Equals(projectId)).Include(project => project.Schedules).First();
             return project.Schedules;
         }
+
+        public Schedule GetScheduleByScheduleId(int scheduleId)
+        {
+            var schedule = _dbContext.Schedules.Where(schedule => schedule.Id.Equals(scheduleId)).First();
+            return schedule;
+        }
     }
 }

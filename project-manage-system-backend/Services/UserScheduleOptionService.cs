@@ -20,7 +20,7 @@ namespace project_manage_system_backend.Services
             {
                 throw new Exception("please enter schedule option Id");
             }
-            if (userScheduleOptionDto.Availability != "Yes" || userScheduleOptionDto.Availability != "IfNeedBe" || userScheduleOptionDto.Availability != "CannotAttend" || userScheduleOptionDto.Availability != "Pending")
+            if (userScheduleOptionDto.Availability != "Yes" && userScheduleOptionDto.Availability != "If Need Be" && userScheduleOptionDto.Availability != "Cannot Attend" && userScheduleOptionDto.Availability != "Pending")
             {
                 throw new Exception("please enter user schedule option availability");
             }
@@ -35,6 +35,23 @@ namespace project_manage_system_backend.Services
                     var scheduleOption = _dbContext.ScheduleOptions.Where(scheduleOption => scheduleOption.Id.Equals(userScheduleOptionDto.ScheduleOptionId)).Include(scheduleOption => scheduleOption.Users).First();
                     if (scheduleOption != null)
                     {
+                        if (userScheduleOptionDto.Availability == "Yes")
+                        {
+                            scheduleOption.NumberOfYes++;
+                        }
+                        else if (userScheduleOptionDto.Availability == "If Need Be")
+                        {
+                            scheduleOption.NumberOfIfNeedBe++;
+                        }
+                        else if (userScheduleOptionDto.Availability == "Cannot Attend")
+                        {
+                            scheduleOption.NumberOfCannotAttend++;
+                        }
+                        else if (userScheduleOptionDto.Availability == "Pending")
+                        {
+                            scheduleOption.NumberOfPending++;
+                        }
+
                         var userScheduleOption = new Models.UserScheduleOption
                         {
                             User = user,
@@ -42,6 +59,7 @@ namespace project_manage_system_backend.Services
                             Availability = userScheduleOptionDto.Availability
                         };
                         _dbContext.Add(userScheduleOption);
+                        _dbContext.Update(scheduleOption);
                     }
                     else
                     {
@@ -50,9 +68,48 @@ namespace project_manage_system_backend.Services
                 }
                 else
                 {
+                    var scheduleOption = _dbContext.ScheduleOptions.Where(scheduleOption => scheduleOption.Id.Equals(userScheduleOptionDto.ScheduleOptionId)).Include(scheduleOption => scheduleOption.Users).First();
+
+                    if (userScheduleOptionDto.Availability == "Yes")
+                    {
+                        scheduleOption.NumberOfYes++;
+                    }
+                    else if (userScheduleOptionDto.Availability == "If Need Be")
+                    {
+                        scheduleOption.NumberOfIfNeedBe++;
+                    }
+                    else if (userScheduleOptionDto.Availability == "Cannot Attend")
+                    {
+                        scheduleOption.NumberOfCannotAttend++;
+                    }
+                    else if (userScheduleOptionDto.Availability == "Pending")
+                    {
+                        scheduleOption.NumberOfPending++;
+                    }
+
                     var userScheduleOption = userScheduleOptions.First();
+
+                    if (userScheduleOption.Availability == "Yes")
+                    {
+                        scheduleOption.NumberOfYes--;
+                    }
+                    else if (userScheduleOption.Availability == "If Need Be")
+                    {
+                        scheduleOption.NumberOfIfNeedBe--;
+                    }
+                    else if (userScheduleOption.Availability == "Cannot Attend")
+                    {
+                        scheduleOption.NumberOfCannotAttend--;
+                    }
+                    else if (userScheduleOption.Availability == "Pending")
+                    {
+                        scheduleOption.NumberOfPending--;
+                    }
+
                     userScheduleOption.Availability = userScheduleOptionDto.Availability;
                     _dbContext.Update(userScheduleOption);
+                    _dbContext.Update(scheduleOption);
+
                 }
             }
             else
@@ -68,7 +125,7 @@ namespace project_manage_system_backend.Services
 
         public List<UserScheduleOption> GetUserListInScheduleOption(int scheduleOptionId)
         {
-            var scheduleOption = _dbContext.ScheduleOptions.Where(scheduleOption => scheduleOption.Id.Equals(scheduleOptionId)).Include(scheduleOption => scheduleOption.Users).First(); ;
+            var scheduleOption = _dbContext.ScheduleOptions.Where(scheduleOption => scheduleOption.Id.Equals(scheduleOptionId)).Include(scheduleOption => scheduleOption.Users).First();
             return scheduleOption.Users;
         }
     }

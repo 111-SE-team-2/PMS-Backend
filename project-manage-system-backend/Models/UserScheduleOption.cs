@@ -8,8 +8,8 @@
         public ScheduleOption ScheduleOption { get; set; }
         /// value：
         ///     Yes
-        ///     IfNeedBe
-        ///     CannotAttend
+        ///     If Need Be
+        ///     Cannot Attend
         ///     Pending
         public string Availability { get; set; }
     }

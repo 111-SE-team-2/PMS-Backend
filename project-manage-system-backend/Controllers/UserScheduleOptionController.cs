@@ -45,7 +45,7 @@ namespace project_manage_system_backend.Controllers
         }
 
         [Authorize]
-        [HttpGet("{scheduleOptionId}")]
+        [HttpGet("{scheduleOptionId}/list")]
         public IActionResult GetUserListInScheduleOption(int scheduleOptionId)
         {
             var result = _userScheduleOptionService.GetUserListInScheduleOption(scheduleOptionId);
