@@ -65,9 +65,41 @@ namespace PMS_test.ServicesTest
 
             testUser.Projects = testUserProject;
 
+            Schedule testSchedule = new Schedule
+            {
+                ProjectId = 1,
+                Project = testProject,
+                Title = "title",
+                Location = "location",
+                Description = "description",
+                IsVideoConferencing = false
+            };
+
             _dbContext.Projects.Add(testProject);
             _dbContext.Users.Add(testUser);
+            _dbContext.Schedules.Add(testSchedule);
             _dbContext.SaveChanges();
+        }
+
+        [Fact]
+        public void TestGetScheduleByProjectId()
+        {
+            List<Schedule> scheduleList = _scheduleService.GetScheduleByProjectId(1);
+            Assert.Single(scheduleList);
+            Assert.Equal("title", scheduleList[0].Title);
+            Assert.Equal("location", scheduleList[0].Location);
+            Assert.Equal("description", scheduleList[0].Description);
+            Assert.False(scheduleList[0].IsVideoConferencing);
+        }
+
+        [Fact]
+        public void TestGetScheduleByScheduleId()
+        {
+            Schedule schedule = _scheduleService.GetScheduleByScheduleId(1);
+            Assert.Equal("title", schedule.Title);
+            Assert.Equal("location", schedule.Location);
+            Assert.Equal("description", schedule.Description);
+            Assert.False(schedule.IsVideoConferencing);
         }
 
         [Fact]
@@ -83,33 +115,23 @@ namespace PMS_test.ServicesTest
             };
             _scheduleService.CreateSchedule(scheduleDto);
 
-            Schedule schedule = _scheduleService.GetScheduleByScheduleId(1);
+            Schedule schedule = _scheduleService.GetScheduleByScheduleId(2);
             Assert.Equal("test title", schedule.Title);
             Assert.Equal("test location", schedule.Location);
             Assert.Equal("test description", schedule.Description);
             Assert.True(schedule.IsVideoConferencing);
 
             List<Schedule> scheduleList = _scheduleService.GetScheduleByProjectId(1);
-            Assert.Single(scheduleList);
-            Assert.Equal("test title", scheduleList[0].Title);
-            Assert.Equal("test location", scheduleList[0].Location);
-            Assert.Equal("test description", scheduleList[0].Description);
-            Assert.True(scheduleList[0].IsVideoConferencing);
+            Assert.Equal(2, scheduleList.Count);
+            Assert.Equal("test title", scheduleList[1].Title);
+            Assert.Equal("test location", scheduleList[1].Location);
+            Assert.Equal("test description", scheduleList[1].Description);
+            Assert.True(scheduleList[1].IsVideoConferencing);
         }
 
         [Fact]
         public void TestEditScheduleInformation()
         {
-            ScheduleDto scheduleDto = new ScheduleDto
-            {
-                projectId = 1,
-                title = "test title",
-                location = "test location",
-                description = "test description",
-                isVideoConferencing = true
-            };
-            _scheduleService.CreateSchedule(scheduleDto);
-
             ScheduleDto editedScheduleDto = new ScheduleDto
             {
                 scheduleId = 1,
@@ -137,60 +159,10 @@ namespace PMS_test.ServicesTest
         [Fact]
         public void TestDeleteSchedule()
         {
-            ScheduleDto scheduleDto = new ScheduleDto
-            {
-                projectId = 1,
-                title = "test title",
-                location = "test location",
-                description = "test description",
-                isVideoConferencing = true
-            };
-            _scheduleService.CreateSchedule(scheduleDto);
             _scheduleService.DeleteSchedule(1);
 
             List<Schedule> scheduleList = _scheduleService.GetScheduleByProjectId(1);
             Assert.Empty(scheduleList);
-        }
-
-        [Fact]
-        public void TestGetScheduleByProjectId()
-        {
-            ScheduleDto scheduleDto = new ScheduleDto
-            {
-                projectId = 1,
-                title = "test title",
-                location = "test location",
-                description = "test description",
-                isVideoConferencing = true
-            };
-            _scheduleService.CreateSchedule(scheduleDto);
-
-            List<Schedule> scheduleList = _scheduleService.GetScheduleByProjectId(1);
-            Assert.Single(scheduleList);
-            Assert.Equal("test title", scheduleList[0].Title);
-            Assert.Equal("test location", scheduleList[0].Location);
-            Assert.Equal("test description", scheduleList[0].Description);
-            Assert.True(scheduleList[0].IsVideoConferencing);
-        }
-
-        [Fact]
-        public void TestGetScheduleByScheduleId()
-        {
-            ScheduleDto scheduleDto = new ScheduleDto
-            {
-                projectId = 1,
-                title = "test title",
-                location = "test location",
-                description = "test description",
-                isVideoConferencing = true
-            };
-            _scheduleService.CreateSchedule(scheduleDto);
-
-            Schedule schedule = _scheduleService.GetScheduleByScheduleId(1);
-            Assert.Equal("test title", schedule.Title);
-            Assert.Equal("test location", schedule.Location);
-            Assert.Equal("test description", schedule.Description);
-            Assert.True(schedule.IsVideoConferencing);
         }
     }
 }
