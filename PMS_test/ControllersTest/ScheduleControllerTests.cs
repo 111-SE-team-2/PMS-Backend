@@ -110,12 +110,12 @@ namespace PMS_test.ControllersTest
 
             Assert.True(requestTask.IsSuccessStatusCode);
 
-            var autual = _dbContext.Schedules.Find(2);
+            var actual = _dbContext.Schedules.Find(2);
 
-            Assert.Equal("test title", autual.Title);
-            Assert.Equal("test location", autual.Location);
-            Assert.Equal("test description", autual.Description);
-            Assert.True(autual.IsVideoConferencing);
+            Assert.Equal("test title", actual.Title);
+            Assert.Equal("test location", actual.Location);
+            Assert.Equal("test description", actual.Description);
+            Assert.True(actual.IsVideoConferencing);
         }
 
         [Fact]
@@ -147,12 +147,12 @@ namespace PMS_test.ControllersTest
 
             Assert.True(requestTask2.IsSuccessStatusCode);
 
-            var autual = _dbContext.Schedules.Find(2);
+            var actual = _dbContext.Schedules.Find(2);
 
-            Assert.Equal("edited title", autual.Title);
-            Assert.Equal("edited location", autual.Location);
-            Assert.Equal("edited description", autual.Description);
-            Assert.False(autual.IsVideoConferencing);
+            Assert.Equal("edited title", actual.Title);
+            Assert.Equal("edited location", actual.Location);
+            Assert.Equal("edited description", actual.Description);
+            Assert.False(actual.IsVideoConferencing);
         }
 
         [Fact]
