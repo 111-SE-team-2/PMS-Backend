@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Data.Common;
 using Xunit;
 
-namespace PMS_test
+namespace PMS_test.ServicesTest
 {
     [TestCaseOrderer("XUnit.Project.Orderers.AlphabeticalOrderer", "XUnit.Project")]
     public class UserServiceTests

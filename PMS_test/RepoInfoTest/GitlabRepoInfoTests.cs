@@ -12,7 +12,7 @@ using System.Data.Common;
 using System.Net.Http;
 using Xunit;
 
-namespace PMS_test.ServicesTest
+namespace PMS_test.RepoInfoTest
 {
     [TestCaseOrderer("XUnit.Project.Orderers.AlphabeticalOrderer", "XUnit.Project")]
     public class GitlabRepoInfoTests

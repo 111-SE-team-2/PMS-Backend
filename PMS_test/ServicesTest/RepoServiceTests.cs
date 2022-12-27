@@ -11,7 +11,7 @@ using System.Data.Common;
 using System.Net.Http;
 using Xunit;
 
-namespace PMS_test.ControllersTest
+namespace PMS_test.ServicesTest
 {
     [TestCaseOrderer("XUnit.Project.Orderers.AlphabeticalOrderer", "XUnit.Project")]
     public class RepoServiceTests
