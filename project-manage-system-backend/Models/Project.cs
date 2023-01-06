@@ -11,5 +11,6 @@ namespace project_manage_system_backend.Models
         public List<Jira> Jiras { get; set; } = new List<Jira>();
         public List<UserProject> Users { get; set; } = new List<UserProject>();
         public List<Schedule> Schedules { get; set; } = new List<Schedule>();
+        public List<MeetingMinute> MeetingMinutes { get; set; } = new List<MeetingMinute>();
     }
 }

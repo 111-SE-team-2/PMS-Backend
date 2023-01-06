@@ -14,6 +14,7 @@ namespace project_manage_system_backend.Shares
         public DbSet<Invitation> Invitations { get; set; }
         public DbSet<Schedule> Schedules { get; set; }
         public DbSet<ScheduleOption> ScheduleOptions { get; set; }
+        public DbSet<MeetingMinute> MeetingMinutes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

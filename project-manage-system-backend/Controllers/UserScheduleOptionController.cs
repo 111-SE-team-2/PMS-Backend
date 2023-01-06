@@ -39,7 +39,7 @@ namespace project_manage_system_backend.Controllers
                 return Ok(new ResponseDto
                 {
                     success = false,
-                    message = "voted Error" + ex.Message
+                    message = ex.Message
                 });
             }
         }
