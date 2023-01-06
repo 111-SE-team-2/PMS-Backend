@@ -67,14 +67,14 @@ namespace PMS_test.ControllersTest
             var mockHttp = new MockHttpMessageHandler();
 
             mockHttp.When(HttpMethod.Get, "https://DomainURL.atlassian.net/rest/agile/1.0/board")
-                .Respond("application/json", getResponseOfBoardDetail());
+                .Respond("application/json", GetResponseOfBoardDetail());
             mockHttp.Fallback.WithAny().Respond(HttpStatusCode.BadRequest);
             
 
             return mockHttp.ToHttpClient();
         }
 
-        private string getResponseOfBoardDetail()
+        private string GetResponseOfBoardDetail()
         {
             string responseData = @"{
                 'maxResults': 50,

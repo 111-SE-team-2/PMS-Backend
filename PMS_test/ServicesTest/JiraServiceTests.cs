@@ -135,11 +135,11 @@ namespace PMS_test.ServicesTest
             return responseData;
         }
 
-        private HttpResponseMessage getResponseOfBoardDetailFail() {
-            HttpResponseMessage httpResponseMessage = new HttpResponseMessage();
-            httpResponseMessage.StatusCode = HttpStatusCode.NotFound;
-            return httpResponseMessage;
-        }
+        //private HttpResponseMessage getResponseOfBoardDetailFail() {
+        //    HttpResponseMessage httpResponseMessage = new HttpResponseMessage();
+        //    httpResponseMessage.StatusCode = HttpStatusCode.NotFound;
+        //    return httpResponseMessage;
+        //}
 
         private HttpClient CreateMockClient()
         {
