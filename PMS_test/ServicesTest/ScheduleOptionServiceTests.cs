@@ -2,7 +2,6 @@
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using project_manage_system_backend.Dtos;
-using project_manage_system_backend.Dtos.Schedule;
 using project_manage_system_backend.Models;
 using project_manage_system_backend.Services;
 using project_manage_system_backend.Shares;
