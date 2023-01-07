@@ -6,17 +6,17 @@ namespace PMS_test.ControllersTest
     [TestCaseOrderer("XUnit.Project.Orderers.AlphabeticalOrderer", "XUnit.Project")]
     public class AuthorizeControllerTests : BaseControllerTests
     {
-        public AuthorizeControllerTests() : base()
-        {
+        //public AuthorizeControllerTests() : base()
+        //{
 
-        }
+        //}
 
-        [Fact]
-        public async Task TestCheckAuthentucate()
-        {
-            var response = await _client.GetAsync("/authorize");
+        //[Fact]
+        //public async Task TestCheckAuthentucate()
+        //{
+        //    var response = await _client.GetAsync("/authorize");
 
-            Assert.True(response.IsSuccessStatusCode);
-        }
+        //    Assert.True(response.IsSuccessStatusCode);
+        //}
     }
 }

@@ -68,23 +68,12 @@ namespace project_manage_system_backend.Controllers
         [HttpDelete("{scheduleId}")]
         public IActionResult DeleteSchedule(int scheduleId)
         {
-            try
+            bool isSuccess = _scheduleService.DeleteSchedule(scheduleId);
+            return Ok(new ResponseDto()
             {
-                bool isSuccess = _scheduleService.DeleteSchedule(scheduleId);
-                return Ok(new ResponseDto()
-                {
-                    success = isSuccess,
-                    message = isSuccess ? "Success" : "Error"
-                });
-            }
-            catch (Exception e)
-            {
-                return Ok(new ResponseDto()
-                {
-                    success = false,
-                    message = e.Message
-                });
-            }
+                success = isSuccess,
+                message = isSuccess ? "Success" : "Error"
+            });
         }
 
         [Authorize]

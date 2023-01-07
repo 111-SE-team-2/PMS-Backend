@@ -119,6 +119,26 @@ namespace PMS_test.ControllersTest
         }
 
         [Fact]
+        public async Task TestCreateScheduleFail()
+        {
+            ScheduleDto scheduleDto = new ScheduleDto
+            {
+                projectId = -1,
+                title = "test title",
+                location = "test location",
+                description = "test description",
+                isVideoConferencing = true
+            };
+
+            var content = new StringContent(JsonSerializer.Serialize(scheduleDto), Encoding.UTF8, "application/json");
+            var requestTask = await _client.PostAsync("/schedule/create", content);
+
+            var result = requestTask.Content.ReadAsStringAsync().Result;
+            var responseDto = JsonSerializer.Deserialize<ResponseDto>(result);
+            Assert.False(responseDto.success);
+        }
+
+        [Fact]
         public async Task TestEditScheduleInformation()
         {
             ScheduleDto scheduleDto = new ScheduleDto
@@ -156,6 +176,26 @@ namespace PMS_test.ControllersTest
         }
 
         [Fact]
+        public async Task TestEditScheduleInformationFail()
+        {
+            ScheduleDto scheduleDto = new ScheduleDto
+            {
+                scheduleId = -1,
+                title = "edited title",
+                location = "edited location",
+                description = "edited description",
+                isVideoConferencing = false
+            };
+
+            var content = new StringContent(JsonSerializer.Serialize(scheduleDto), Encoding.UTF8, "application/json");
+            var requestTask = await _client.PutAsync("/schedule/edit", content);
+
+            var result = requestTask.Content.ReadAsStringAsync().Result;
+            var responseDto = JsonSerializer.Deserialize<ResponseDto>(result);
+            Assert.False(responseDto.success);
+        }
+
+        [Fact]
         public async Task TestDeleteSchedule()
         {
             var requestTask = await _client.DeleteAsync("/schedule/1");
@@ -167,6 +207,18 @@ namespace PMS_test.ControllersTest
             var actual = JsonSerializer.Deserialize<List<Schedule>>(resultContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
             Assert.Empty(actual);
+        }
+
+        [Fact]
+        public async Task TestDeleteScheduleFail()
+        {
+            var requestTask = await _client.DeleteAsync("/schedule/-1");
+
+            Assert.True(requestTask.IsSuccessStatusCode);
+
+            var result = requestTask.Content.ReadAsStringAsync().Result;
+            var responseDto = JsonSerializer.Deserialize<ResponseDto>(result);
+            Assert.False(responseDto.success);
         }
     }
 }

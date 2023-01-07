@@ -120,6 +120,24 @@ namespace PMS_test.ControllersTest
         }
 
         [Fact]
+        public async Task TestAddScheduleOptionFail()
+        {
+            ScheduleOptionDto scheduleOptionDto = new ScheduleOptionDto
+            {
+                scheduleId = -1,
+                duration = "2 hour",
+                startTime = "2022/12/31 19:00"
+            };
+
+            var content = new StringContent(JsonSerializer.Serialize(scheduleOptionDto), Encoding.UTF8, "application/json");
+            var requestTask = await _client.PostAsync("/scheduleOption/add", content);
+
+            var result = requestTask.Content.ReadAsStringAsync().Result;
+            var responseDto = JsonSerializer.Deserialize<ResponseDto>(result);
+            Assert.False(responseDto.success);
+        }
+
+        [Fact]
         public async Task TestDeleteScheduleOption()
         {
             var requestTask = await _client.DeleteAsync("/scheduleOption/1");
@@ -131,6 +149,18 @@ namespace PMS_test.ControllersTest
             var actual = JsonSerializer.Deserialize<List<ScheduleOption>>(resultContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
             Assert.Empty(actual);
+        }
+
+        [Fact]
+        public async Task TestDeleteScheduleOptionFail()
+        {
+            var requestTask = await _client.DeleteAsync("/scheduleOption/-1");
+
+            Assert.True(requestTask.IsSuccessStatusCode);
+
+            var result = requestTask.Content.ReadAsStringAsync().Result;
+            var responseDto = JsonSerializer.Deserialize<ResponseDto>(result);
+            Assert.False(responseDto.success);
         }
     }
 }

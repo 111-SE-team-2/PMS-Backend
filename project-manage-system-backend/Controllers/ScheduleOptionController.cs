@@ -45,23 +45,12 @@ namespace project_manage_system_backend.Controllers
         [HttpDelete("{scheduleOptionId}")]
         public IActionResult DeleteScheduleOption(int scheduleOptionId)
         {
-            try
+            bool isSuccess = _scheduleOptionService.DeleteScheduleOption(scheduleOptionId);
+            return Ok(new ResponseDto()
             {
-                bool isSuccess = _scheduleOptionService.DeleteScheduleOption(scheduleOptionId);
-                return Ok(new ResponseDto()
-                {
-                    success = isSuccess,
-                    message = isSuccess ? "Success" : "Error"
-                });
-            }
-            catch (Exception e)
-            {
-                return Ok(new ResponseDto()
-                {
-                    success = false,
-                    message = e.Message
-                });
-            }
+                success = isSuccess,
+                message = isSuccess ? "Success" : "Error"
+            });
         }
 
         [Authorize]

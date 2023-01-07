@@ -129,7 +129,67 @@ namespace PMS_test.ServicesTest
             Assert.Equal(0, scheduleOptionList[1].NumberOfCannotAttend);
             Assert.Equal(0, scheduleOptionList[1].NumberOfPending);
         }
-        
+
+        [Fact]
+        public void TestAddScheduleOptionFailWithUnvalidScheduleId()
+        {
+            ScheduleOptionDto scheduleOptionDto = new ScheduleOptionDto
+            {
+                scheduleId = -1,
+                duration = "2 hour",
+                startTime = "2022/12/31 19:00"
+            };
+            
+            Assert.Throws<Exception>(() => _scheduleOptionService.AddScheduleOption(scheduleOptionDto));
+        }
+
+        [Fact]
+        public void TestAddScheduleOptionFailWithUnvalidDuration()
+        {
+            ScheduleOptionDto scheduleOptionDto = new ScheduleOptionDto
+            {
+                scheduleId = 1,
+                duration = "",
+                startTime = "2022/12/31 19:00"
+            };
+
+            Assert.Throws<Exception>(() => _scheduleOptionService.AddScheduleOption(scheduleOptionDto));
+        }
+
+        [Fact]
+        public void TestAddScheduleOptionFailWithUnvalidStartTime()
+        {
+            ScheduleOptionDto scheduleOptionDto = new ScheduleOptionDto
+            {
+                scheduleId = 1,
+                duration = "2 hour",
+                startTime = ""
+            };
+
+            Assert.Throws<Exception>(() => _scheduleOptionService.AddScheduleOption(scheduleOptionDto));
+        }
+
+        [Fact]
+        public void TestAddScheduleOptionFailDuplicate()
+        {
+            ScheduleOptionDto scheduleOptionDto = new ScheduleOptionDto
+            {
+                scheduleId = 1,
+                duration = "2 hour",
+                startTime = "2022/12/31 19:00"
+            };
+            _scheduleOptionService.AddScheduleOption(scheduleOptionDto);
+
+            ScheduleOptionDto scheduleOptionDto2 = new ScheduleOptionDto
+            {
+                scheduleId = 1,
+                duration = "2 hour",
+                startTime = "2022/12/31 19:00"
+            };
+
+            Assert.Throws<Exception>(() => _scheduleOptionService.AddScheduleOption(scheduleOptionDto2));
+        }
+
         [Fact]
         public void TestDeleteScheduleOption()
         {
@@ -137,6 +197,12 @@ namespace PMS_test.ServicesTest
 
             List<ScheduleOption> scheduleOptionList = _scheduleOptionService.GetScheduleOptionByScheduleId(1);
             Assert.Empty(scheduleOptionList);
+        }
+
+        [Fact]
+        public void TestDeleteScheduleOptionFail()
+        {
+            Assert.False(_scheduleOptionService.DeleteScheduleOption(-1));
         }
     }
 }

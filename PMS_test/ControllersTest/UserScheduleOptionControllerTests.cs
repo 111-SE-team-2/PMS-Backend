@@ -125,5 +125,22 @@ namespace PMS_test.ControllersTest
             Assert.Equal(1, actual[1].ScheduleOptionId);
             Assert.Equal("If Need Be", actual[1].Availability);
         }
+
+        [Fact]
+        public async Task TestVoteScheduleOptionFail()
+        {
+            UserScheduleOptionDto userScheduleOptionDto = new UserScheduleOptionDto
+            {
+                ScheduleOptionId = -1,
+                Availability = "If Need Be"
+            };
+
+            var content = new StringContent(JsonSerializer.Serialize(userScheduleOptionDto), Encoding.UTF8, "application/json");
+            var requestTask = await _client.PostAsync("/userScheduleOption/vote", content);
+
+            var result = requestTask.Content.ReadAsStringAsync().Result;
+            var responseDto = JsonSerializer.Deserialize<ResponseDto>(result);
+            Assert.False(responseDto.success);
+        }
     }
 }

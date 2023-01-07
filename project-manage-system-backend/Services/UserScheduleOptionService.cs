@@ -31,40 +31,32 @@ namespace project_manage_system_backend.Services
                 var userScheduleOptions = user.ScheduleOptions.Where(userScheduleOption => userScheduleOption.ScheduleOptionId == userScheduleOptionDto.ScheduleOptionId).ToList();
                 if (userScheduleOptions.Count == 0)
                 {
-                    //var scheduleOption = _dbContext.ScheduleOptions.Find(userScheduleOptionDto.ScheduleOptionId);
                     var scheduleOption = _dbContext.ScheduleOptions.Where(scheduleOption => scheduleOption.Id.Equals(userScheduleOptionDto.ScheduleOptionId)).Include(scheduleOption => scheduleOption.Users).First();
-                    if (scheduleOption != null)
+                    if (userScheduleOptionDto.Availability == "Yes")
                     {
-                        if (userScheduleOptionDto.Availability == "Yes")
-                        {
-                            scheduleOption.NumberOfYes++;
-                        }
-                        else if (userScheduleOptionDto.Availability == "If Need Be")
-                        {
-                            scheduleOption.NumberOfIfNeedBe++;
-                        }
-                        else if (userScheduleOptionDto.Availability == "Cannot Attend")
-                        {
-                            scheduleOption.NumberOfCannotAttend++;
-                        }
-                        else if (userScheduleOptionDto.Availability == "Pending")
-                        {
-                            scheduleOption.NumberOfPending++;
-                        }
+                        scheduleOption.NumberOfYes++;
+                    }
+                    else if (userScheduleOptionDto.Availability == "If Need Be")
+                    {
+                        scheduleOption.NumberOfIfNeedBe++;
+                    }
+                    else if (userScheduleOptionDto.Availability == "Cannot Attend")
+                    {
+                        scheduleOption.NumberOfCannotAttend++;
+                    }
+                    else if (userScheduleOptionDto.Availability == "Pending")
+                    {
+                        scheduleOption.NumberOfPending++;
+                    }
 
-                        var userScheduleOption = new Models.UserScheduleOption
-                        {
-                            User = user,
-                            ScheduleOption = scheduleOption,
-                            Availability = userScheduleOptionDto.Availability
-                        };
-                        _dbContext.Add(userScheduleOption);
-                        _dbContext.Update(scheduleOption);
-                    }
-                    else
+                    var userScheduleOption = new Models.UserScheduleOption
                     {
-                        throw new Exception("schedule option fail, can not find this schedule option");
-                    }
+                        User = user,
+                        ScheduleOption = scheduleOption,
+                        Availability = userScheduleOptionDto.Availability
+                    };
+                    _dbContext.Add(userScheduleOption);
+                    _dbContext.Update(scheduleOption);
                 }
                 else
                 {

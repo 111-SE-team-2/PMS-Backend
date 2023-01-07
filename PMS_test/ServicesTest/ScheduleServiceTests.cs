@@ -130,6 +130,62 @@ namespace PMS_test.ServicesTest
         }
 
         [Fact]
+        public void TestCreateScheduleFailWithUnvalidProjectId()
+        {
+            ScheduleDto scheduleDto = new ScheduleDto
+            {
+                projectId = -1,
+                title = "test title",
+                location = "test location",
+                description = "test description",
+                isVideoConferencing = true
+            };
+            Assert.Throws<Exception>(() => _scheduleService.CreateSchedule(scheduleDto));
+        }
+
+        [Fact]
+        public void TestCreateScheduleFailWithUnvalidTitleEmpty()
+        {
+            ScheduleDto scheduleDto = new ScheduleDto
+            {
+                projectId = 1,
+                title = "",
+                location = "test location",
+                description = "test description",
+                isVideoConferencing = true
+            };
+            Assert.Throws<Exception>(() => _scheduleService.CreateSchedule(scheduleDto));
+        }
+
+        [Fact]
+        public void TestCreateScheduleFailWithUnvalidTitleDuplicate()
+        {
+            ScheduleDto scheduleDto = new ScheduleDto
+            {
+                projectId = 1,
+                title = "title",
+                location = "test location",
+                description = "test description",
+                isVideoConferencing = true
+            };
+            Assert.Throws<Exception>(() => _scheduleService.CreateSchedule(scheduleDto));
+        }
+
+        [Fact]
+        public void TestCreateScheduleFailWithUnvalidLocation()
+        {
+            ScheduleDto scheduleDto = new ScheduleDto
+            {
+                projectId = 1,
+                title = "test title",
+                location = "",
+                description = "test description",
+                isVideoConferencing = true
+            };
+            Assert.Throws<Exception>(() => _scheduleService.CreateSchedule(scheduleDto));
+        }
+
+        [Fact]
         public void TestEditScheduleInformation()
         {
             ScheduleDto editedScheduleDto = new ScheduleDto
@@ -157,12 +213,88 @@ namespace PMS_test.ServicesTest
         }
 
         [Fact]
+        public void TestEditScheduleInformationFailWithUnvalidScheduleId()
+        {
+            ScheduleDto editedScheduleDto = new ScheduleDto
+            {
+                scheduleId = -1,
+                title = "edited title",
+                location = "edited location",
+                description = "edited description",
+                isVideoConferencing = false
+            };
+            
+            Assert.Throws<Exception>(() => _scheduleService.EditScheduleInformation(editedScheduleDto));
+        }
+
+        [Fact]
+        public void TestEditScheduleInformationFailWithUnvalidTitleEmpty()
+        {
+            ScheduleDto editedScheduleDto = new ScheduleDto
+            {
+                scheduleId = 1,
+                title = "",
+                location = "edited location",
+                description = "edited description",
+                isVideoConferencing = false
+            };
+
+            Assert.Throws<Exception>(() => _scheduleService.EditScheduleInformation(editedScheduleDto));
+        }
+
+        [Fact]
+        public void TestEditScheduleInformationFailWithUnvalidTitleDuplicate()
+        {
+            ScheduleDto scheduleDto = new ScheduleDto
+            {
+                projectId = 1,
+                title = "test title",
+                location = "test location",
+                description = "test description",
+                isVideoConferencing = true
+            };
+            _scheduleService.CreateSchedule(scheduleDto);
+
+            ScheduleDto editedScheduleDto = new ScheduleDto
+            {
+                scheduleId = 1,
+                title = "test title",
+                location = "edited location",
+                description = "edited description",
+                isVideoConferencing = false
+            };
+
+            Assert.Throws<Exception>(() => _scheduleService.EditScheduleInformation(editedScheduleDto));
+        }
+
+        [Fact]
+        public void TestEditScheduleInformationFailWithUnvalidLocation()
+        {
+            ScheduleDto editedScheduleDto = new ScheduleDto
+            {
+                scheduleId = 1,
+                title = "edited title",
+                location = "",
+                description = "edited description",
+                isVideoConferencing = false
+            };
+
+            Assert.Throws<Exception>(() => _scheduleService.EditScheduleInformation(editedScheduleDto));
+        }
+
+        [Fact]
         public void TestDeleteSchedule()
         {
             _scheduleService.DeleteSchedule(1);
 
             List<Schedule> scheduleList = _scheduleService.GetScheduleByProjectId(1);
             Assert.Empty(scheduleList);
+        }
+
+        [Fact]
+        public void TestDeleteScheduleFail()
+        {
+            Assert.False(_scheduleService.DeleteSchedule(-1));
         }
     }
 }
