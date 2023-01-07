@@ -117,6 +117,42 @@ namespace PMS_test.ServicesTest
         }
 
         [Fact]
+        public void TestCreateMeetingMinuteFailWithUnvalidProjectId()
+        {
+            MeetingMinuteDto meetingMinuteDto = new MeetingMinuteDto
+            {
+                projectId = -1,
+                title = "test title",
+                content = "test content",
+            };
+            Assert.Throws<Exception>(() => _meetingMinuteService.CreateMeetingMinute(meetingMinuteDto));
+        }
+
+        [Fact]
+        public void TestCreateMeetingMinuteFailWithUnvalidTitleEmpty()
+        {
+            MeetingMinuteDto meetingMinuteDto = new MeetingMinuteDto
+            {
+                projectId = 1,
+                title = "",
+                content = "test content",
+            };
+            Assert.Throws<Exception>(() => _meetingMinuteService.CreateMeetingMinute(meetingMinuteDto));
+        }
+
+        [Fact]
+        public void TestCreateMeetingMinuteFailWithUnvalidTitleDuplicate()
+        {
+            MeetingMinuteDto meetingMinuteDto = new MeetingMinuteDto
+            {
+                projectId = 1,
+                title = "title",
+                content = "test content",
+            };
+            Assert.Throws<Exception>(() => _meetingMinuteService.CreateMeetingMinute(meetingMinuteDto));
+        }
+
+        [Fact]
         public void TestEditMeetingMinuteInformation()
         {
             MeetingMinuteDto editedMeetingMinuteDto = new MeetingMinuteDto
@@ -138,12 +174,65 @@ namespace PMS_test.ServicesTest
         }
 
         [Fact]
+        public void TestEditMeetingMinuteInformationFailWithUnvalidMeetingMinuteId()
+        {
+            MeetingMinuteDto editedMeetingMinuteDto = new MeetingMinuteDto
+            {
+                meetingMinuteId = -1,
+                title = "edited title",
+                content = "edited content",
+            };
+
+            Assert.Throws<Exception>(() => _meetingMinuteService.EditMeetingMinuteInformation(editedMeetingMinuteDto));
+        }
+
+        [Fact]
+        public void TestEditMeetingMinuteInformationFailWithUnvalidTitleEmpty()
+        {
+            MeetingMinuteDto editedMeetingMinuteDto = new MeetingMinuteDto
+            {
+                meetingMinuteId = 1,
+                title = "",
+                content = "edited content",
+            };
+
+            Assert.Throws<Exception>(() => _meetingMinuteService.EditMeetingMinuteInformation(editedMeetingMinuteDto));
+        }
+
+        [Fact]
+        public void TestEditMeetingMinuteInformationFailWithUnvalidTitleDuplicate()
+        {
+            MeetingMinuteDto meetingMinuteDto = new MeetingMinuteDto
+            {
+                projectId = 1,
+                title = "test title",
+                content = "test content",
+            };
+            _meetingMinuteService.CreateMeetingMinute(meetingMinuteDto);
+
+            MeetingMinuteDto editedMeetingMinuteDto = new MeetingMinuteDto
+            {
+                meetingMinuteId = 1,
+                title = "test title",
+                content = "edited content",
+            };
+
+            Assert.Throws<Exception>(() => _meetingMinuteService.EditMeetingMinuteInformation(editedMeetingMinuteDto));
+        }
+
+        [Fact]
         public void TestDeleteMeetingMinute()
         {
             _meetingMinuteService.DeleteMeetingMinute(1);
 
             List<MeetingMinute> meetingMinuteList = _meetingMinuteService.GetMeetingMinuteByProjectId(1);
             Assert.Empty(meetingMinuteList);
+        }
+
+        [Fact]
+        public void TestDeleteMeetingMinuteFail()
+        {
+            Assert.False(_meetingMinuteService.DeleteMeetingMinute(2));
         }
     }
 }

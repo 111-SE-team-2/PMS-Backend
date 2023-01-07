@@ -19,7 +19,8 @@ namespace PMS_test.ControllersTest
         private readonly JiraService _jiraService;
 
 
-        JiraLoginDto jiraLoginDto = new JiraLoginDto{
+        JiraLoginDto jiraLoginDto = new JiraLoginDto
+        {
             DomainURL = "DomainURL",
             APIToken = "APIToken",
             Account = "Account",
@@ -27,7 +28,8 @@ namespace PMS_test.ControllersTest
             ProjectId = 1
         };
 
-        JiraLoginDto dtoForFail = new JiraLoginDto{
+        JiraLoginDto dtoForFail = new JiraLoginDto
+        {
             DomainURL = "failDomainURL",
             APIToken = "APIToken",
             Account = "Account",
@@ -35,7 +37,7 @@ namespace PMS_test.ControllersTest
             ProjectId = 1
         };
 
-        private Project _project1;  
+        private Project _project1;
 
         public JiraControllerTests() : base()
         {
@@ -69,7 +71,7 @@ namespace PMS_test.ControllersTest
             mockHttp.When(HttpMethod.Get, "https://DomainURL.atlassian.net/rest/agile/1.0/board")
                 .Respond("application/json", GetResponseOfBoardDetail());
             mockHttp.Fallback.WithAny().Respond(HttpStatusCode.BadRequest);
-            
+
 
             return mockHttp.ToHttpClient();
         }
@@ -117,9 +119,10 @@ namespace PMS_test.ControllersTest
 
             return responseData;
         }
-        
+
         [Fact]
-        public void TestCreateJiraRepoSuccess() {
+        public void TestCreateJiraRepoSuccess()
+        {
             IActionResult iActionResult = _jiraController.CreateJiraRepo(jiraLoginDto);
             var okResult = iActionResult as OkObjectResult;
             var responseDto = okResult.Value as ResponseDto;
@@ -130,7 +133,8 @@ namespace PMS_test.ControllersTest
         }
 
         [Fact]
-        public void TestCreateJiraRepoFail() {
+        public void TestCreateJiraRepoFail()
+        {
             IActionResult iActionResult = _jiraController.CreateJiraRepo(dtoForFail);
             var okResult = iActionResult as OkObjectResult;
             var responseDto = okResult.Value as ResponseDto;
@@ -139,9 +143,10 @@ namespace PMS_test.ControllersTest
             Assert.False(responseDto.success);
             Assert.True(responseDto.message.Contains("Added Error: One or more errors occurred."));
         }
-        
+
         [Fact]
-        public void TestGetBoardInfo() {
+        public void TestGetBoardInfo()
+        {
             Task<IActionResult> iActionResult = _jiraController.GetBoardInfo(jiraLoginDto);
             var okResult = iActionResult.Result as OkObjectResult;
             Assert.Equal(200, okResult.StatusCode);

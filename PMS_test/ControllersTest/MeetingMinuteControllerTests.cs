@@ -108,6 +108,24 @@ namespace PMS_test.ControllersTest
         }
 
         [Fact]
+        public async Task TestCreateMeetingMinuteFail()
+        {
+            MeetingMinuteDto meetingMinuteDto = new MeetingMinuteDto
+            {
+                projectId = -1,
+                title = "test title",
+                content = "test content"
+            };
+
+            var content = new StringContent(JsonSerializer.Serialize(meetingMinuteDto), Encoding.UTF8, "application/json");
+            var requestTask = await _client.PostAsync("/meetingMinute/create", content);
+
+            var result = requestTask.Content.ReadAsStringAsync().Result;
+            var responseDto = JsonSerializer.Deserialize<ResponseDto>(result);
+            Assert.False(responseDto.success);
+        }
+
+        [Fact]
         public async Task TestEditMeetingMinuteInformation()
         {
             MeetingMinuteDto meetingMinuteDto = new MeetingMinuteDto
@@ -139,6 +157,24 @@ namespace PMS_test.ControllersTest
         }
 
         [Fact]
+        public async Task TestEditMeetingMinuteInformationFail()
+        {
+            MeetingMinuteDto meetingMinuteDto = new MeetingMinuteDto
+            {
+                meetingMinuteId = -1,
+                title = "edited title",
+                content = "edited content"
+            };
+
+            var content = new StringContent(JsonSerializer.Serialize(meetingMinuteDto), Encoding.UTF8, "application/json");
+            var requestTask = await _client.PutAsync("/meetingMinute/edit", content);
+
+            var result = requestTask.Content.ReadAsStringAsync().Result;
+            var responseDto = JsonSerializer.Deserialize<ResponseDto>(result);
+            Assert.False(responseDto.success);
+        }
+
+        [Fact]
         public async Task TestDeleteMeetingMinute()
         {
             var requestTask = await _client.DeleteAsync("/meetingMinute/1");
@@ -150,6 +186,18 @@ namespace PMS_test.ControllersTest
             var actual = JsonSerializer.Deserialize<List<MeetingMinute>>(resultContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
             Assert.Empty(actual);
+        }
+
+        [Fact]
+        public async Task TestDeleteMeetingMinuteFail()
+        {
+            var requestTask = await _client.DeleteAsync("/meetingMinute/-1");
+
+            Assert.True(requestTask.IsSuccessStatusCode);
+
+            var result = requestTask.Content.ReadAsStringAsync().Result;
+            var responseDto = JsonSerializer.Deserialize<ResponseDto>(result);
+            Assert.False(responseDto.success);
         }
     }
 }

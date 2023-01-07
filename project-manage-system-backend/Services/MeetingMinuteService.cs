@@ -39,7 +39,9 @@ namespace project_manage_system_backend.Services
 
             _dbContext.Add(meetingMinute);
             if (_dbContext.SaveChanges() == 0)
+            {
                 throw new Exception("create meeting minute fail");
+            }
         }
 
         public void EditMeetingMinuteInformation(MeetingMinuteDto meetingMinuteDto)

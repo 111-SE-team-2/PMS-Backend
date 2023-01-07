@@ -67,28 +67,17 @@ namespace project_manage_system_backend.Controllers
         [HttpDelete("{meetingMinuteId}")]
         public IActionResult DeleteMeetingMinute(int meetingMinuteId)
         {
-            try
+            bool isSuccess = _meetingMinuteService.DeleteMeetingMinute(meetingMinuteId);
+            return Ok(new ResponseDto()
             {
-                bool isSuccess = _meetingMinuteService.DeleteMeetingMinute(meetingMinuteId);
-                return Ok(new ResponseDto()
-                {
-                    success = isSuccess,
-                    message = isSuccess ? "Success" : "Error"
-                });
-            }
-            catch (Exception e)
-            {
-                return Ok(new ResponseDto()
-                {
-                    success = false,
-                    message = e.Message
-                });
-            }
+                success = isSuccess,
+                message = isSuccess ? "Success" : "Error"
+            });
         }
 
         [Authorize]
         [HttpGet("project/{projectId}")]
-        public IActionResult GetScheduleByProjectId(int projectId)
+        public IActionResult GetMeetinhMinuteByProjectId(int projectId)
         {
             var result = _meetingMinuteService.GetMeetingMinuteByProjectId(projectId);
             return Ok(result);
